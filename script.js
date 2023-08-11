@@ -127,7 +127,7 @@ fetch(url + '?_=' + new Date().getTime())
       const gapHeight = 10; // высота промежутка (в css вообще она 12)
       const paneHeight = Math.min(numLabels, maxLabelsPerColumn) * (labelHeight + gapHeight) - gapHeight;
       pane.style.height = `${paneHeight}px`;
-    // делаем имена моделей редактируемыми
+      // делаем имена моделей редактируемыми
       labels.forEach((label) => {
         label.setAttribute("contenteditable", "true");
         label.setAttribute("spellcheck", "false");
@@ -153,9 +153,9 @@ fetch(url + '?_=' + new Date().getTime())
           label.addEventListener('dblclick', () => {
             // на всякий случай грузим заново данные из json
             fetch(url + '?_=' + new Date().getTime())
-              // имена файлов только на английском, потому сразу загружаем как данные
-              .then((response) => response.json())
-              .then((data) => {
+              .then((response) => response.text())
+              .then((text) => {
+                const data = JSON.parse(text);
                 const modelName = label.textContent;
                 const modelFiles = data.models[modelName].split(', ');
                 modalTitle.textContent = modelName;
@@ -171,6 +171,12 @@ fetch(url + '?_=' + new Date().getTime())
                   fileNameSpan.setAttribute('class', 'filename');
                   fileNameSpan.setAttribute("spellcheck", "false");
                   fileNameSpan.textContent = fileName;
+                  fileNameSpan.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                      fileNameSpan.blur();
+                    }
+                  });
                   // а его расширение оставляем не редактируемым
                   const fileExtensionSpan = document.createElement('span');
                   fileExtensionSpan.textContent = fileExtension;
@@ -178,6 +184,20 @@ fetch(url + '?_=' + new Date().getTime())
                   listItem.appendChild(fileExtensionSpan);
                   modalList.appendChild(listItem);
                   modal.style.display = 'block';
+                });
+                // переименование файлов моделей на диске и в json
+                document.querySelectorAll('.filename').forEach(fileNameSpan => {
+                  fileNameSpan.addEventListener('input', () => {
+                    const model = modalTitle.textContent;
+                    const files = Array.from(modalList.querySelectorAll('.filename')).map(filename => filename.textContent + filename.nextElementSibling.textContent).join(', ');
+                    fetch('/', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ model, files })
+                    });
+                  });
                 });
                 // добавляем кнопку удаления файла только для моделей с > 1 файлами
                 if (modelFiles.length > 1) {

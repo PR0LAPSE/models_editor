@@ -10,7 +10,7 @@ work_dir = os.path.normpath(os.path.dirname(os.path.abspath(__file__))) if "__fi
 os.chdir(work_dir)
 server_port = 8000
 urlprefix = "https://huggingface.co/2ch/models/resolve/main/"
-json_name = re.search(r'const url = "([^"]+)"', open('script.js').read()).group(1) if os.path.exists('script.js') else "colab_models.json"
+json_name = re.search(r'const url = "([^"]+)"', open('script.js', encoding='utf-8').read()).group(1) if os.path.exists('script.js') else "colab_models.json"
 hf_user = "2ch"
 hf_repo = "models"
 hf_token = "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"

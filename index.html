@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>визуальный редактор коллекции моделей</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header lang="ru">
+    <h1>все изменения в названиях и именах файлов сразу вносятся в json и переименовывают файлы в локальном
+      репозитории!</h1>
+    <info>
+      <ul>
+        <li>Поиск вверху слева работает по всем вкладкам и показывает сразу модель в категории</li>
+        <li>Клик по названию модели → изменить название</li>
+        <li>Двойной клик → посмотреть список файлов модели и изменить имена файлов</li>
+        <li>Кнопка <button class="delete_button">×</button> доступна только для моделей с количеством файлов > 1, и она
+          удаляет запись о файле из json, но файл в репозитории останется и переименуется с суффиксом "_deleted"</li>
+        <li>Окошко со списком файлов перетаскивается куда удобно</li>
+        <li>Кнопка вверху справа → коммит&пуш в репозиторий</li>
+      </ul>
+    </info>
+    <close>понятно</close>
+  </header>
+  <div class="top">
+    <section id="search_container">
+      <div class="search">
+        <input type="text" name="search" id="search" placeholder="поиск по всем категориям" autocomplete="off">
+        <button id="clear_search_results">⛌</button>
+      </div>
+      <div id="search_result"></div>
+    </section>
+    <button id="theme"></button>
+    <button id="information">ℹ</button>
+    <button id="run_push2HF">отправить изменения в HF</button>
+  </div>
+  <main id="container" lang="en"></main>
+  <script src="./script.js"></script>
+</body>
+</html>

@@ -101,8 +101,8 @@ class RequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_header('Content-Type', 'text/plain')
                 self.end_headers()
                 self.wfile.write(result.encode())
-            except:
-                print('An exception occurred')
+            except Exception as e:
+                print(f"ОШИБКА: {e}")
                 self.send_response(200)
                 self.send_header('Content-Type', 'text/plain')
                 self.end_headers()
